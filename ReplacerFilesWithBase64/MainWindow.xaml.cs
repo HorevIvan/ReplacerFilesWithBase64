@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,7 +39,18 @@ namespace ReplacerFilesWithBase64
                 lines[5] = lines[5].Replace(e2, r2);
             }
 
-            text2.Text = String.Join("\n", lines);
+            text2.Text = string.Join("\n", lines);
+
+            Save(text1.Text, text2.Text);
+        }
+
+        private void Save(string text1, string text2)
+        {
+            var timestamp = DateTime.Now.ToString("yyyyMMdd-HHmmssff");
+
+            File.WriteAllText($"{timestamp}-inp.txt", text1);
+
+            File.WriteAllText($"{timestamp}-out.txt", text2);
         }
 
         private string Replace(string base64)
@@ -46,7 +58,6 @@ namespace ReplacerFilesWithBase64
             var str = Base64Decode(base64);
 
             str = str.Replace("MSK-DPRO-PSG220", "MSK-DPRO-PSG916");
-            str = str.Replace("6432", "5432");
 
             return Base64Encode(str);
         }
